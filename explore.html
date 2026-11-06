@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Community Needs & Offers | NeedBridge</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <div id="nb-navbar-mount"></div>
+
+  <!-- Explore Header -->
+  <section class="bg-navy text-white py-4">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h2 class="fw-bold text-white mb-1">Explore Community Support</h2>
+          <p class="text-light mb-0" style="font-size: 0.95rem;">
+            Unified search across all 8 community categories. Discover what neighbors need and offers available nearby.
+          </p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+          <div class="d-inline-flex gap-2">
+            <a href="post-need.html" class="btn btn-outline-light btn-sm"><i class="bi bi-plus-circle me-1"></i> Post Need</a>
+            <a href="offer-help.html" class="btn btn-teal-custom btn-sm"><i class="bi bi-heart-pulse me-1"></i> Offer Help</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="main-content py-4">
+    <div class="container">
+      <div class="row g-4">
+        
+        <!-- SIDEBAR FILTERS -->
+        <div class="col-lg-3 col-md-4">
+          <div class="card p-3 border rounded-3 shadow-sm sticky-top" style="top: 85px; z-index: 10;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold mb-0 text-primary-navy"><i class="bi bi-sliders me-1"></i> Filters</h5>
+              <button type="button" class="btn btn-sm btn-link text-teal text-decoration-none p-0" id="btn-clear-filters">
+                Reset All
+              </button>
+            </div>
+
+            <form id="filter-form">
+              <!-- Keyword Search -->
+              <div class="mb-3">
+                <label class="form-label">Keyword Search</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                  <input type="text" id="filter-keyword" class="form-control" placeholder="Search title, details...">
+                </div>
+              </div>
+
+              <!-- Listing Type: All, Needs, Offers -->
+              <div class="mb-3">
+                <label class="form-label">Listing Type</label>
+                <select id="filter-type" class="form-select">
+                  <option value="all">All Listings (Needs & Offers)</option>
+                  <option value="need">Needs Only (People asking for help)</option>
+                  <option value="offer">Offers Only (Available resources)</option>
+                </select>
+              </div>
+
+              <!-- Category -->
+              <div class="mb-3">
+                <label class="form-label">Category</label>
+                <select id="filter-category" class="form-select">
+                  <option value="all">All Categories</option>
+                  <!-- Populated from db -->
+                </select>
+              </div>
+
+              <!-- Subcategory -->
+              <div class="mb-3">
+                <label class="form-label">Subcategory</label>
+                <select id="filter-subcategory" class="form-select" disabled>
+                  <option value="all">Select Category First</option>
+                </select>
+              </div>
+
+              <!-- Location / City -->
+              <div class="mb-3">
+                <label class="form-label">City</label>
+                <select id="filter-city" class="form-select">
+                  <option value="all">All Cities</option>
+                  <option value="Hyderabad">Hyderabad</option>
+                  <option value="Bengaluru">Bengaluru</option>
+                  <option value="Mumbai">Mumbai</option>
+                  <option value="Delhi">Delhi</option>
+                  <option value="Chennai">Chennai</option>
+                  <option value="Pune">Pune</option>
+                </select>
+              </div>
+
+              <!-- Area / Neighborhood -->
+              <div class="mb-3">
+                <label class="form-label">Neighborhood / Area</label>
+                <input type="text" id="filter-area" class="form-control" placeholder="e.g. Madhapur, Kondapur">
+              </div>
+
+              <!-- Free vs Paid Filter -->
+              <div class="mb-3">
+                <label class="form-label">Cost / Payment</label>
+                <select id="filter-cost" class="form-select">
+                  <option value="all">All (Free & Paid)</option>
+                  <option value="free">Free / Donated Only</option>
+                  <option value="paid">Paid Listings Only</option>
+                </select>
+              </div>
+
+              <!-- Urgency Level -->
+              <div class="mb-3">
+                <label class="form-label">Urgency Level</label>
+                <select id="filter-urgency" class="form-select">
+                  <option value="all">Any Urgency</option>
+                  <option value="Urgent/Emergency">Urgent / Emergency</option>
+                  <option value="High">High Urgency</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low / Flexible</option>
+                </select>
+              </div>
+
+              <!-- Availability -->
+              <div class="mb-3">
+                <label class="form-label">Availability</label>
+                <select id="filter-availability" class="form-select">
+                  <option value="all">Any Availability</option>
+                  <option value="Immediate">Immediate</option>
+                  <option value="Weekdays">Weekdays</option>
+                  <option value="Weekends">Weekends</option>
+                </select>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- MAIN RESULTS AREA -->
+        <div class="col-lg-9 col-md-8">
+          <!-- Control Bar: Count, Sort, Grid/Map Toggle -->
+          <div class="card p-3 mb-4 border rounded-3 bg-white shadow-sm">
+            <div class="row align-items-center g-2">
+              <div class="col-sm-6">
+                <span class="fw-bold text-primary-navy" id="results-count-text">Loading listings...</span>
+              </div>
+              <div class="col-sm-6 d-flex justify-content-sm-end align-items-center gap-2">
+                <div class="d-flex align-items-center gap-1">
+                  <label class="text-muted small text-nowrap">Sort by:</label>
+                  <select id="sort-select" class="form-select form-select-sm" style="width: auto;">
+                    <option value="newest">Newest First</option>
+                    <option value="price_low">Price: Low to High</option>
+                    <option value="price_high">Price: High to Low</option>
+                  </select>
+                </div>
+                <!-- View Toggle Buttons -->
+                <div class="btn-group btn-group-sm" role="group">
+                  <button type="button" class="btn btn-outline-secondary active" id="btn-view-grid" title="Grid View">
+                    <i class="bi bi-grid-fill"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary" id="btn-view-map" title="Map View">
+                    <i class="bi bi-map"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MAP VIEW CONTAINER (Hidden by default) -->
+          <div id="explore-map-container" class="mb-4 d-none">
+            <div class="card p-2 border shadow-sm">
+              <div id="explore-map" style="height: 480px; width: 100%; border-radius: 12px;"></div>
+              <div class="p-2 d-flex justify-content-between align-items-center small text-muted">
+                <div>
+                  <span class="badge bg-danger me-1">● Need</span>
+                  <span class="badge bg-success me-1">● Offer</span>
+                  <span>General area center markers protect privacy.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LISTINGS GRID -->
+          <div class="row g-4" id="explore-listings-grid">
+            <!-- Populated dynamically by explore.js -->
+          </div>
+
+          <!-- EMPTY STATE (Hidden by default) -->
+          <div id="explore-empty-state" class="text-center py-5 d-none">
+            <div class="category-icon-wrapper bg-subtle-teal text-teal mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2.2rem;">
+              <i class="bi bi-search"></i>
+            </div>
+            <h4 class="fw-bold text-primary-navy">No Matching Listings Found</h4>
+            <p class="text-muted" style="max-width: 480px; margin: 0 auto 1.5rem auto;">
+              We couldn't find any community needs or offers matching your current filter combination. Try clearing some filters or searching with different keywords.
+            </p>
+            <button type="button" class="btn btn-teal-custom" onclick="document.getElementById('btn-clear-filters').click()">
+              <i class="bi bi-arrow-counterclockwise me-1"></i> Reset All Filters
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="nb-footer-mount"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/matching.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/explore.js"></script>
+</body>
+</html>

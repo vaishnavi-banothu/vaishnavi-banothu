@@ -1,0 +1,108 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'Administrator';
+    }
+
+    // --- Users Collection ---
+    match /users/{userId} {
+      // Anyone can read public user profiles (avatar, name, role, isVerified)
+      allow read: if true;
+      // Users can create their own profile upon registration (Admin role cannot be self-assigned)
+      allow create: if isAuthenticated() && request.auth.uid == userId && request.resource.data.role != 'Administrator';
+      // Users can update only their own profile; only admins can modify role, isVerified, or isSuspended
+      allow update: if (isOwner(userId) && 
+                       !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'isVerified', 'isSuspended'])) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // --- Categories Collection ---
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // --- Needs Collection ---
+    match /needs/{needId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update: if (isAuthenticated() && resource.data.userId == request.auth.uid) || isAdmin();
+      allow delete: if (isAuthenticated() && resource.data.userId == request.auth.uid) || isAdmin();
+    }
+
+    // --- Offers Collection ---
+    match /offers/{offerId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update: if (isAuthenticated() && resource.data.userId == request.auth.uid) || isAdmin();
+      allow delete: if (isAuthenticated() && resource.data.userId == request.auth.uid) || isAdmin();
+    }
+
+    // --- Requests Collection ---
+    match /requests/{requestId} {
+      allow read: if isAuthenticated() && (
+        resource.data.requesterId == request.auth.uid || 
+        resource.data.providerId == request.auth.uid || 
+        isAdmin()
+      );
+      allow create: if isAuthenticated() && request.resource.data.requesterId == request.auth.uid;
+      allow update: if isAuthenticated() && (
+        resource.data.requesterId == request.auth.uid || 
+        resource.data.providerId == request.auth.uid || 
+        isAdmin()
+      );
+      allow delete: if isAdmin();
+    }
+
+    // --- Conversations & Messages ---
+    match /conversations/{conversationId} {
+      allow read: if isAuthenticated() && (request.auth.uid in resource.data.participants || isAdmin());
+      allow create: if isAuthenticated() && request.auth.uid in request.resource.data.participants;
+      allow update: if isAuthenticated() && (request.auth.uid in resource.data.participants || isAdmin());
+    }
+
+    match /messages/{messageId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.resource.data.senderId == request.auth.uid;
+    }
+
+    // --- Reviews Collection ---
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && request.resource.data.reviewerId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    // --- Reports Collection ---
+    match /reports/{reportId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // --- Notifications Collection ---
+    match /notifications/{notifId} {
+      allow read, update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated();
+    }
+
+    // --- Verification Requests Collection ---
+    match /verificationRequests/{verifId} {
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow read: if (isAuthenticated() && resource.data.userId == request.auth.uid) || isAdmin();
+      allow update, delete: if isAdmin();
+    }
+  }
+}

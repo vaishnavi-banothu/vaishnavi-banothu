@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard & Moderation Console | NeedBridge</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="bg-light">
+
+  <div id="nb-navbar-mount"></div>
+
+  <!-- ADMIN TOP BAR -->
+  <section class="bg-navy text-white py-3 border-bottom border-teal">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div class="d-flex align-items-center gap-3">
+          <div class="bg-danger text-white rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+            <i class="bi bi-shield-lock-fill fs-5"></i>
+          </div>
+          <div>
+            <h4 class="fw-bold mb-0 text-white">NeedBridge Administrator Console</h4>
+            <div class="text-light small">Platform Governance, Content Moderation, and Community Verification</div>
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <span class="badge bg-success-subtle text-success border border-success p-2">
+            <i class="bi bi-check-circle-fill me-1"></i> Admin Privileges Verified
+          </span>
+          <button type="button" class="btn btn-sm btn-outline-light" onclick="refreshAdminData()">
+            <i class="bi bi-arrow-clockwise me-1"></i> Refresh Data
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="main-content py-4">
+    <div class="container">
+      
+      <!-- 8 METRICS CARDS GRID (AS REQUIRED IN SECTION 5.9) -->
+      <div class="row g-3 mb-4">
+        <!-- 1. Total Registered Users -->
+        <div class="col-xl-3 col-md-6 col-6">
+          <div class="stat-box p-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="text-muted small fw-bold">TOTAL USERS</span>
+              <i class="bi bi-people-fill text-primary fs-4"></i>
+            </div>
+            <div class="stat-number text-primary-navy" id="stat-admin-users">0</div>
+            <div class="small text-muted">Registered members</div>
+          </div>
+        </div>
+
+        <!-- 2. Total Active Listings -->
+        <div class="col-xl-3 col-md-6 col-6">
+          <div class="stat-box p-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="text-muted small fw-bold">ACTIVE LISTINGS</span>
+              <i class="bi bi-collection-fill text-teal fs-4"></i>
+            </div>
+            <div class="stat-number text-teal" id="stat-admin-listings">0</div>
+            <div class="small text-muted">Needs + Offers combined</div>
+          </div>
+        </div>
+
+        <!-- 3. Total Needs -->
+        <div class="col-xl-3 col-md-6 col-6">
+          <div class="stat-box p-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="text-muted small fw-bold">TOTAL NEEDS</span>
+              <i class="bi bi-person-raised-hand text-danger fs-4"></i>
+            </div>
+            <div class="stat-number text-danger" id="stat-admin-needs">0</div>
+            <div class="small text-muted">Community requests</div>
+          </div>
+        </div>
+
+        <!-- 4. Total Offers -->
+        <div class="col-xl-3 col-md-6 col-6">
+          <div class="stat-box p-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="text-muted small fw-bold">TOTAL OFFERS</span>
+              <i class="bi bi-gift-fill text-success fs-4"></i>
+            </div>
+            <div class="stat-number text-success" id="stat-admin-offers">0</div>
+            <div class="small text-muted">Active services & items</div>
+          </div>
+        </div>
+
+        <!-- 5. Pending Requests -->
+        <div class="col-xl-3 col-md-6 col-6">
+          <div class="stat-box p-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="text-muted small fw-bold">PENDING REQUESTS</span>
+              <i class="bi bi-hourglass-split text-warning fs-4"></i>
+            </div>
+            <div class="stat-number text-warning" id="stat-admin-pending-req">0</div>
+            <div class="small text-muted">Awaiting fulfillment</div>
+          </div>
+        </div>
+
+        <!-- 6. Completed Requests -->
+        <div class="col-xl-3 col-md-6 col-6">
+          <div class="stat-box p-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="text-muted small fw-bold">COMPLETED HELP</span>
+              <i class="bi bi-check-all text-primary fs-4"></i>
+            </div>
+            <div class="stat-number text-primary" id="stat-admin-completed-req">0</div>
+            <div class="small text-muted">Successful connections</div>
+          </div>
+        </div>
+
+        <!-- 7. Pending Verification -->
+        <div class="col-xl-3 col-md-6 col-6">
+          <div class="stat-box p-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="text-muted small fw-bold">VERIFICATIONS</span>
+              <i class="bi bi-patch-check-fill text-info fs-4"></i>
+            </div>
+            <div class="stat-number text-info" id="stat-admin-pending-verif">0</div>
+            <div class="small text-muted">Credential reviews pending</div>
+          </div>
+        </div>
+
+        <!-- 8. Reported Listings -->
+        <div class="col-xl-3 col-md-6 col-6">
+          <div class="stat-box p-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="text-muted small fw-bold">REPORTED CONTENT</span>
+              <i class="bi bi-flag-fill text-danger fs-4"></i>
+            </div>
+            <div class="stat-number text-danger" id="stat-admin-reports">0</div>
+            <div class="small text-muted">Safety alerts flagged</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN FUNCTIONALITY TABS -->
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+        <div class="card-header bg-white border-bottom p-0">
+          <ul class="nav nav-tabs border-0 flex-nowrap overflow-x-auto" id="adminTabs" role="tablist">
+            <li class="nav-item">
+              <button class="nav-link active py-3 px-4 fw-semibold text-nowrap" id="admin-users-tab-btn" data-bs-toggle="tab" data-bs-target="#admin-users-tab" type="button">
+                <i class="bi bi-people me-1"></i> User Management (<span id="tab-count-users">0</span>)
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link py-3 px-4 fw-semibold text-nowrap" id="admin-listings-tab-btn" data-bs-toggle="tab" data-bs-target="#admin-listings-tab" type="button">
+                <i class="bi bi-card-list me-1"></i> Listings Moderation (<span id="tab-count-listings">0</span>)
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link py-3 px-4 fw-semibold text-nowrap" id="admin-reports-tab-btn" data-bs-toggle="tab" data-bs-target="#admin-reports-tab" type="button">
+                <i class="bi bi-flag me-1 text-danger"></i> User Reports (<span id="tab-count-reports">0</span>)
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link py-3 px-4 fw-semibold text-nowrap" id="admin-verif-tab-btn" data-bs-toggle="tab" data-bs-target="#admin-verif-tab" type="button">
+                <i class="bi bi-patch-check me-1 text-teal"></i> Verifications (<span id="tab-count-verifs">0</span>)
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link py-3 px-4 fw-semibold text-nowrap" id="admin-categories-tab-btn" data-bs-toggle="tab" data-bs-target="#admin-categories-tab" type="button">
+                <i class="bi bi-grid me-1"></i> Category Schema
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-body p-4">
+          <div class="tab-content" id="adminTabsContent">
+            
+            <!-- 1. USER MANAGEMENT -->
+            <div class="tab-pane fade show active" id="admin-users-tab" role="tabpanel">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-primary-navy mb-0">Registered Community Accounts</h5>
+                <span class="text-muted small">Manage permissions, suspension, and verification status.</span>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th>User</th>
+                      <th>Role</th>
+                      <th>City</th>
+                      <th>Verification</th>
+                      <th>Account Status</th>
+                      <th class="text-end">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-users-table-body">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 2. LISTINGS MODERATION -->
+            <div class="tab-pane fade" id="admin-listings-tab" role="tabpanel">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-primary-navy mb-0">All Community Listings</h5>
+                <span class="text-muted small">Inspect, review, or remove inappropriate posts.</span>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Title & Type</th>
+                      <th>Category</th>
+                      <th>Posted By</th>
+                      <th>Location</th>
+                      <th>Price / Budget</th>
+                      <th>Date</th>
+                      <th class="text-end">Moderation</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-listings-table-body">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 3. USER REPORTS -->
+            <div class="tab-pane fade" id="admin-reports-tab" role="tabpanel">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-danger mb-0"><i class="bi bi-flag-fill me-1"></i> Flagged Content Reports</h5>
+                <span class="text-muted small">Review user reports submitted by the community.</span>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Flagged Listing</th>
+                      <th>Reason</th>
+                      <th>Report Details</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                      <th class="text-end">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-reports-table-body">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 4. VERIFICATION REQUESTS -->
+            <div class="tab-pane fade" id="admin-verif-tab" role="tabpanel">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-teal mb-0"><i class="bi bi-patch-check-fill me-1"></i> Provider & Organization Verifications</h5>
+                <span class="text-muted small">Approve or reject community trust credentials.</span>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Applicant</th>
+                      <th>Organization / Business</th>
+                      <th>Role</th>
+                      <th>Document Proof Type</th>
+                      <th>Notes</th>
+                      <th>Status</th>
+                      <th class="text-end">Review Decision</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-verif-table-body">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 5. CATEGORIES SCHEMA -->
+            <div class="tab-pane fade" id="admin-categories-tab" role="tabpanel">
+              <h5 class="fw-bold text-primary-navy mb-3">Eight Main Community Categories & Subcategories</h5>
+              <div class="row g-3" id="admin-categories-schema">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="nb-footer-mount"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/matching.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

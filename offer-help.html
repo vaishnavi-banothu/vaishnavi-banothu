@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offer Help | NeedBridge</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="bg-light">
+
+  <div id="nb-navbar-mount"></div>
+
+  <main class="main-content py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-12">
+          
+          <div class="mb-4 text-center">
+            <span class="badge bg-subtle-teal text-teal px-3 py-2 rounded-pill fw-bold mb-2">
+              <i class="bi bi-gift-fill me-1"></i> Community Contribution
+            </span>
+            <h2 class="fw-bold text-primary-navy">What support can you provide?</h2>
+            <p class="text-muted" style="max-width: 580px; margin: 0 auto;">
+              Offer resources, services, donations, or skills. Whether free or paid, your contribution strengthens the community bridge.
+            </p>
+          </div>
+
+          <div class="card shadow-md border-0 rounded-4 p-4 p-md-5 bg-white">
+            <form id="form-offer-help">
+              <div class="row g-4">
+                
+                <!-- Offer Title -->
+                <div class="col-12">
+                  <label class="form-label" for="offer-title">Offer Title *</label>
+                  <input type="text" id="offer-title" class="form-control" placeholder="e.g., Free Engineering & Computer Science Textbooks in Madhapur" required maxlength="120">
+                  <small class="text-muted">Clear titles help requesters and our search matching system discover your offer.</small>
+                </div>
+
+                <!-- Category -->
+                <div class="col-md-6 col-12">
+                  <label class="form-label" for="offer-category">Category *</label>
+                  <select id="offer-category" class="form-select" required>
+                    <option value="" disabled selected>Select a Category</option>
+                  </select>
+                </div>
+
+                <!-- Subcategory -->
+                <div class="col-md-6 col-12">
+                  <label class="form-label" for="offer-subcategory">Subcategory *</label>
+                  <select id="offer-subcategory" class="form-select" disabled required>
+                    <option value="" disabled selected>Select Category First</option>
+                  </select>
+                </div>
+
+                <!-- Description -->
+                <div class="col-12">
+                  <label class="form-label" for="offer-desc">Full Description & Availability *</label>
+                  <textarea id="offer-desc" rows="4" class="form-control" placeholder="Describe the item or service, specifications, condition, pickup/delivery details, and terms..." required></textarea>
+                </div>
+
+                <!-- Location: City -->
+                <div class="col-md-6 col-12">
+                  <label class="form-label" for="offer-city">City *</label>
+                  <select id="offer-city" class="form-select" required>
+                    <option value="Hyderabad" selected>Hyderabad</option>
+                    <option value="Bengaluru">Bengaluru</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Kolkata">Kolkata</option>
+                  </select>
+                </div>
+
+                <!-- Location: Area -->
+                <div class="col-md-6 col-12">
+                  <label class="form-label" for="offer-area">Neighborhood / Area *</label>
+                  <input type="text" id="offer-area" class="form-control" placeholder="e.g. Madhapur, Kondapur" required>
+                  <small class="text-muted"><i class="bi bi-shield-lock"></i> Exact addresses remain confidential until you accept a request.</small>
+                </div>
+
+                <!-- Free vs Paid Choice -->
+                <div class="col-md-6 col-12">
+                  <label class="form-label">Pricing / Donation *</label>
+                  <div class="d-flex gap-3 mt-1">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="offerPriceType" id="priceFree" value="free" checked>
+                      <label class="form-check-label" for="priceFree">100% Free / Donation</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="offerPriceType" id="pricePaid" value="paid">
+                      <label class="form-check-label" for="pricePaid">Fixed Price / Fee</label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Price input (shown if paid) -->
+                <div class="col-md-6 col-12" id="price-input-wrapper" style="display: none;">
+                  <label class="form-label" for="offer-price">Price (₹) *</label>
+                  <div class="input-group">
+                    <span class="input-group-text">₹</span>
+                    <input type="number" id="offer-price" class="form-control" placeholder="e.g. 250" min="0">
+                  </div>
+                </div>
+
+                <!-- Availability Schedule -->
+                <div class="col-md-6 col-12">
+                  <label class="form-label" for="offer-availability">Availability Schedule *</label>
+                  <select id="offer-availability" class="form-select" required>
+                    <option value="Immediate" selected>Immediate / On-demand</option>
+                    <option value="Weekdays">Weekdays</option>
+                    <option value="Weekends">Weekends Only</option>
+                    <option value="Flexible">Flexible / Upon Agreement</option>
+                  </select>
+                </div>
+
+                <!-- Optional Image Upload -->
+                <div class="col-12">
+                  <label class="form-label" for="offer-image">Item / Service Image</label>
+                  <input type="file" id="offer-image" class="form-control" accept="image/*">
+                  <div id="image-preview-wrap" class="mt-2 d-none">
+                    <img id="image-preview" src="" alt="Preview" style="max-height: 180px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col-12 mt-4">
+                  <button type="submit" class="btn btn-teal-custom w-100 py-3 fs-6" id="btn-submit-offer">
+                    <i class="bi bi-gift-fill me-1"></i> Publish Offer to Community
+                  </button>
+                </div>
+
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="nb-footer-mount"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/matching.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/offer-help.js"></script>
+</body>
+</html>

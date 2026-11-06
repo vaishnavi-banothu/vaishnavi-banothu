@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Register | NeedBridge</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="bg-light">
+
+  <div id="nb-navbar-mount"></div>
+
+  <main class="main-content py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-12">
+          
+          <div class="text-center mb-4">
+            <a href="index.html">
+              <img src="assets/logo.svg" alt="NeedBridge" style="height: 52px;">
+            </a>
+            <p class="text-muted mt-2" style="font-size: 0.95rem;">
+              Connecting Needs. Empowering People.
+            </p>
+          </div>
+
+          <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+            <!-- Nav Tabs -->
+            <ul class="nav nav-pills nav-fill bg-white border-bottom p-2" id="authTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-bold py-2" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-panel" type="button" role="tab">
+                  <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold py-2" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-panel" type="button" role="tab">
+                  <i class="bi bi-person-plus me-1"></i> Create Account
+                </button>
+              </li>
+            </ul>
+
+            <div class="card-body p-4 p-md-5">
+              <!-- Alert container -->
+              <div id="auth-alert" class="alert d-none" role="alert"></div>
+
+              <div class="tab-content" id="authTabContent">
+                
+                <!-- LOGIN TAB -->
+                <div class="tab-pane fade show active" id="login-panel" role="tabpanel">
+                  <h4 class="fw-bold text-primary-navy mb-3">Welcome Back to NeedBridge</h4>
+                  <p class="text-muted mb-4" style="font-size: 0.88rem;">Sign in to manage your needs, offers, requests, and direct messages.</p>
+
+                  <form id="form-login">
+                    <div class="mb-3">
+                      <label class="form-label" for="login-email">Email Address</label>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        <input type="email" class="form-control" id="login-email" placeholder="name@example.com" value="user@needbridge.org" required>
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <label class="form-label" for="login-password">Password</label>
+                        <a href="javascript:void(0)" class="text-teal" style="font-size:0.82rem;" data-bs-toggle="modal" data-bs-target="#resetPasswordModal">Forgot Password?</a>
+                      </div>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input type="password" class="form-control" id="login-password" placeholder="Enter your password" value="password123" required>
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-teal-custom w-100 py-2 mt-3" id="btn-login-submit">
+                      <i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Account
+                    </button>
+                  </form>
+
+                  <!-- Quick Demo Accounts Helper -->
+                  <div class="mt-4 p-3 bg-light rounded-3 border">
+                    <div class="fw-bold text-muted mb-2" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                      <i class="bi bi-lightning-charge-fill text-warning me-1"></i> Quick Demo Logins:
+                    </div>
+                    <div class="d-flex flex-wrap gap-1">
+                      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="fillDemoCredentials('user@needbridge.org')">👤 Priya (User)</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="fillDemoCredentials('provider@needbridge.org')">🛠️ Ramesh (Provider)</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="fillDemoCredentials('org@needbridge.org')">🏛️ Hope NGO</button>
+                      <button type="button" class="btn btn-sm btn-outline-danger" onclick="fillDemoCredentials('admin@needbridge.org')">🛡️ Admin</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- REGISTER TAB -->
+                <div class="tab-pane fade" id="register-panel" role="tabpanel">
+                  <h4 class="fw-bold text-primary-navy mb-2">Join the NeedBridge Community</h4>
+                  <p class="text-muted mb-4" style="font-size: 0.88rem;">One account allows you to both request help and offer support.</p>
+
+                  <form id="form-register">
+                    <div class="row g-3">
+                      <div class="col-12">
+                        <label class="form-label" for="reg-name">Full Name *</label>
+                        <div class="input-group">
+                          <span class="input-group-text"><i class="bi bi-person"></i></span>
+                          <input type="text" class="form-control" id="reg-name" placeholder="e.g. John Doe" required>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-12">
+                        <label class="form-label" for="reg-email">Email Address *</label>
+                        <div class="input-group">
+                          <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                          <input type="email" class="form-control" id="reg-email" placeholder="name@example.com" required>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-12">
+                        <label class="form-label" for="reg-phone">Phone Number (Optional)</label>
+                        <div class="input-group">
+                          <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                          <input type="tel" class="form-control" id="reg-phone" placeholder="+91 98765 43210">
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-12">
+                        <label class="form-label" for="reg-city">City *</label>
+                        <select class="form-select" id="reg-city" required>
+                          <option value="Hyderabad" selected>Hyderabad</option>
+                          <option value="Bengaluru">Bengaluru</option>
+                          <option value="Mumbai">Mumbai</option>
+                          <option value="Delhi">Delhi</option>
+                          <option value="Chennai">Chennai</option>
+                          <option value="Pune">Pune</option>
+                          <option value="Kolkata">Kolkata</option>
+                          <option value="Other">Other City</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-6 col-12">
+                        <label class="form-label" for="reg-area">Neighborhood / Area</label>
+                        <input type="text" class="form-control" id="reg-area" placeholder="e.g. Madhapur, Hitec City">
+                      </div>
+
+                      <div class="col-md-6 col-12">
+                        <label class="form-label" for="reg-lang">Preferred Language</label>
+                        <select class="form-select" id="reg-lang">
+                          <option value="en" selected>English</option>
+                          <option value="hi">हिन्दी (Hindi)</option>
+                          <option value="te">తెలుగు (Telugu)</option>
+                          <option value="ta">தமிழ் (Tamil)</option>
+                          <option value="es">Español</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-6 col-12">
+                        <label class="form-label" for="reg-role">Account Type *</label>
+                        <select class="form-select" id="reg-role" required>
+                          <option value="Regular User" selected>Regular Community Member</option>
+                          <option value="Service Provider">Independent Service Provider</option>
+                          <option value="Organization">Non-profit / Organization</option>
+                        </select>
+                        <small class="text-muted" style="font-size:0.75rem;">You can both post needs and offer help regardless of type.</small>
+                      </div>
+
+                      <div class="col-md-6 col-12">
+                        <label class="form-label" for="reg-password">Password *</label>
+                        <input type="password" class="form-control" id="reg-password" placeholder="At least 6 characters" minlength="6" required>
+                      </div>
+
+                      <div class="col-md-6 col-12">
+                        <label class="form-label" for="reg-confirm-password">Confirm Password *</label>
+                        <input type="password" class="form-control" id="reg-confirm-password" placeholder="Repeat password" minlength="6" required>
+                      </div>
+
+                      <div class="col-12 mt-3">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="reg-terms" required checked>
+                          <label class="form-check-label text-muted" for="reg-terms" style="font-size: 0.85rem;">
+                            I agree to the <a href="privacy.html" class="text-teal" target="_blank">NeedBridge Community Guidelines & Terms</a>.
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="col-12 mt-4">
+                        <button type="submit" class="btn btn-teal-custom w-100 py-2" id="btn-register-submit">
+                          <i class="bi bi-person-check-fill me-1"></i> Register Free Account
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FORGOT PASSWORD MODAL -->
+  <div class="modal fade" id="resetPasswordModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold text-primary-navy">Reset Your Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <p class="text-muted" style="font-size: 0.88rem;">
+            Enter your registered email address and we will dispatch password recovery instructions.
+          </p>
+          <form id="form-reset-password">
+            <div class="mb-3">
+              <label class="form-label">Email Address</label>
+              <input type="email" id="reset-email" class="form-control" placeholder="name@example.com" required>
+            </div>
+            <button type="submit" class="btn btn-teal-custom w-100">Send Reset Link</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="nb-footer-mount"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth-page.js"></script>
+</body>
+</html>

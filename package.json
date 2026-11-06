@@ -1,0 +1,19 @@
+{
+  "name": "needbridge",
+  "version": "1.0.0",
+  "description": "NeedBridge – All-in-One Community Support Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Ready for testing! Open http://localhost:3000\""
+  },
+  "keywords": [
+    "community-support",
+    "resource-sharing",
+    "firebase",
+    "matching-algorithm",
+    "college-project"
+  ],
+  "author": "NeedBridge Team",
+  "license": "MIT"
+}
