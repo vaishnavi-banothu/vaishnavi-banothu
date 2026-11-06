@@ -48,4 +48,4 @@ Welcome to my GitHub profile!
 
 ---
 
-⭐ *Learning, Building, and Growing Every Day!*
+*Learning, Building, and Growing Every Day!*
